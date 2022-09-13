@@ -145,9 +145,10 @@ python3 scripts/rest_client.py --config rest_config.json <command> [optional par
 | `locks` | Displays currently locked pairs.
 | `delete_lock <lock_id>` | Deletes (disables) the lock by id.
 | `profit` | Display a summary of your profit/loss from close trades and some stats about your performance.
-| `forcesell <trade_id>` | Instantly sells the given trade  (Ignoring `minimum_roi`).
-| `forcesell all` | Instantly sells all open trades (Ignoring `minimum_roi`).
-| `forcebuy <pair> [rate]` | Instantly buys the given pair. Rate is optional. (`forcebuy_enable` must be set to True)
+| `forceexit <trade_id>` | Instantly exits the given trade  (Ignoring `minimum_roi`).
+| `forceexit all` | Instantly exits all open trades (Ignoring `minimum_roi`).
+| `forceenter <pair> [rate]` | Instantly enters the given pair. Rate is optional. (`force_entry_enable` must be set to True)
+| `forceenter <pair> <side> [rate]` | Instantly longs or shorts the given pair. Rate is optional. (`force_entry_enable` must be set to True)
 | `performance` | Show performance of each finished trade grouped by pair.
 | `balance` | Show account balance per currency.
 | `daily <n>` | Shows profit or loss per day, over the last n days (n defaults to 7).
@@ -162,6 +163,8 @@ python3 scripts/rest_client.py --config rest_config.json <command> [optional par
 | `strategy <strategy>` | Get specific Strategy content. **Alpha**
 | `available_pairs` | List available backtest data. **Alpha**
 | `version` | Show version.
+| `sysinfo` | Show informations about the system load.
+| `health` | Show bot health (last bot loop).
 
 !!! Warning "Alpha status"
     Endpoints labeled with *Alpha status* above may change at any time without notice.
@@ -215,10 +218,22 @@ forcebuy
         :param pair: Pair to buy (ETH/BTC)
         :param price: Optional - price to buy
 
-forcesell
-	Force-sell a trade.
+forceenter
+	Force entering a trade
+
+        :param pair: Pair to buy (ETH/BTC)
+        :param side: 'long' or 'short'
+        :param price: Optional - price to buy
+
+forceexit
+	Force-exit a trade.
 
         :param tradeid: Id of the trade (can be received via status command)
+        :param ordertype: Order type to use (must be market or limit)
+        :param amount: Amount to sell. Full sell if not given
+
+health
+	Provides a quick health check of the running bot.
 
 locks
 	Return current locks
@@ -285,6 +300,9 @@ strategy
 
         :param strategy: Strategy class name
 
+sysinfo
+	Provides system information (CPU, RAM usage)
+
 trade
 	Return specific trade
 
@@ -301,12 +319,13 @@ version
 
 whitelist
 	Show the current whitelist.
+
 ```
 
 ### OpenAPI interface
 
 To enable the builtin openAPI interface (Swagger UI), specify `"enable_openapi": true` in the api_server configuration.
-This will enable the Swagger UI at the `/docs` endpoint. By default, that's running at http://localhost:8080/docs/ - but it'll depend on your settings.
+This will enable the Swagger UI at the `/docs` endpoint. By default, that's running at http://localhost:8080/docs - but it'll depend on your settings.
 
 ### Advanced API usage using JWT tokens
 

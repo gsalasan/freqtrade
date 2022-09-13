@@ -4,11 +4,12 @@ channels:
 # - defaults
 dependencies:
 # 1/4 req main
-    - python>=3.7,<3.9
+    - python>=3.8,<=3.10
     - numpy
     - pandas
     - pip
 
+    - py-find-1st
     - aiohttp
     - SQLAlchemy
     - python-telegram-bot
@@ -25,9 +26,14 @@ dependencies:
     - fastapi
     - uvicorn
     - pyjwt
+    - aiofiles
+    - psutil
     - colorama
     - questionary
     - prompt-toolkit
+    - schedule
+    - python-dateutil
+    - joblib
 
 
     # ============================
@@ -50,7 +56,6 @@ dependencies:
     - scikit-learn
     - filelock
     - scikit-optimize
-    - joblib
     - progressbar2
     # ============================
     # 4/4 req plot
@@ -60,7 +65,7 @@ dependencies:
 
     - pip:
         - pycoingecko
-        - py_find_1st
+        # - py_find_1st
         - tables
         - pytest-random-order
         - ccxt
